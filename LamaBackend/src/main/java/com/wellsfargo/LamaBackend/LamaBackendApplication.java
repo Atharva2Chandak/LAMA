@@ -17,11 +17,16 @@ public class LamaBackendApplication {
 		String URI = "jdbc:mariadb://localhost:3306/LamaDb";
 		DatabaseConnectionWithDriverManager connection = new DatabaseConnectionWithDriverManager(URI);
 		try {
-			
 			System.out.println("database connected: " + connection.connect());
 		} catch(SQLException e) {
-			e.printStackTrace();
+			ExceptionHandler.printException(e);
+		} finally {
+			try {
+				connection.closeConnection();
+			} catch(SQLException e) {
+				ExceptionHandler.printException(e);
+			}
 		}
-	}
+	} 
 
 }
