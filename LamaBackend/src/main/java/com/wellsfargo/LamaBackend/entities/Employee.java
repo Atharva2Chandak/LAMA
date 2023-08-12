@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,29 +18,40 @@ import org.hibernate.annotations.GenericGenerator;
 public class Employee {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	@Column(name="employee_id")
+	@GeneratedValue(generator="uuid", strategy=GenerationType.AUTO)
+	@GenericGenerator(name="uuid", strategy="uuid2")
+	@Column(name="employee_id", unique=true, nullable=false)
 	private String id;
 	
-	@Column(name="employee_name")
+	
+	@Column(name="employee_name", nullable=false)
 	private String name;
+	
+	
+	@Column(nullable=false)
+	private String password;
 	
 	private String designation;
 	private String department;
 	private char gender;
+	
 	private Date dob;
 	private Date doj;
+	
+	@Column(name="is_admin")
 	private char isAdmin;
 	public Employee() {
 		super();
 	}
 	
-	public Employee(String name, String designation, String department, char gender, Date dob, Date doj) {
+	public Employee(String name, String designation, String password, String department, char gender, Date dob, Date doj) {
 		super();
 		this.name = name;
 		this.designation = designation;
 		this.department = department;
+		
+		//TO-DO hash password
+		this.password = password;
 		this.gender = gender;
 		this.dob = dob;
 		this.doj = doj;
@@ -56,6 +68,13 @@ public class Employee {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public void setPassword(String password) {
+		//To-do hash password
+		this.password = password;
+	}
+	public String getPassword() {
+		return password;
 	}
 	public String getDesignation() {
 		return designation;
