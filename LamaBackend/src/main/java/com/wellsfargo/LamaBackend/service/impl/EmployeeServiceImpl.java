@@ -7,7 +7,9 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.wellsfargo.LamaBackend.dto.EmployeeGetDto;
 import com.wellsfargo.LamaBackend.dto.EmployeePostDto;
@@ -29,10 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
 	}
 	
-	public EmployeeGetDto getEmployee(String id) {
-		Employee employee = this.employeeRepository.findById(id)
-							.orElse(new Employee());
-		EmployeeGetDto employeeGetDto = this.modelMapper.map(employee, EmployeeGetDto.class);
+	public EmployeeGetDto getEmployee(String id) throws ResponseStatusException {
+		Optional<Employee> employee = this.employeeRepository.findById(id);
+		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		EmployeeGetDto employeeGetDto = this.modelMapper.map(employee.get(), EmployeeGetDto.class);
 		return employeeGetDto;
 	}
 	
@@ -45,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return foundEmployeesDto;
 	}
 	
-	public EmployeePostDto patchEmployee(String id, Map<String ,String> employee) throws Exception {
+	public EmployeePostDto patchEmployee(String id, Map<String ,String> employee) throws ResponseStatusException {
 		
 		Optional<Employee> dbEmp = this.employeeRepository.findById(id);
 		if(dbEmp.isPresent()) {
@@ -80,7 +82,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Employee updatedEmployee = this.employeeRepository.save(foundEmployee);
 			return this.modelMapper.map(updatedEmployee, EmployeePostDto.class);
 		} else {
-			throw new Exception("Employee not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found");
 		}
+	}
+	
+	public Boolean deleteEmployee(String id) {
+		if(id == null) return false;
+			this.employeeRepository.deleteById(id);
+		return true;
 	}
 }

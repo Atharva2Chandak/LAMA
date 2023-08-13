@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.wellsfargo.LamaBackend.dto.EmployeeGetDto;
 import com.wellsfargo.LamaBackend.dto.EmployeePostDto;
@@ -33,7 +35,7 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeGetDto> getEmployee(@PathVariable String id) {
+	public ResponseEntity<EmployeeGetDto> getEmployee(@PathVariable String id) throws ResponseStatusException {
 		EmployeeGetDto foundEmployee = this.employeeServiceImpl.getEmployee(id);
 		return new ResponseEntity<EmployeeGetDto>(foundEmployee, HttpStatus.OK);
 	}
@@ -45,15 +47,21 @@ public class EmployeeController {
 	}
 	
 	@PatchMapping("/update/{id}")
-	public ResponseEntity<EmployeePostDto> updateEmployeeDetails(@PathVariable String id, @RequestBody Map<String,String> employee) {
+	public ResponseEntity<EmployeePostDto> updateEmployeeDetails(@PathVariable String id, @RequestBody Map<String,String> employee) throws ResponseStatusException{
 		try {
 			EmployeePostDto updatedEmployee = this.employeeServiceImpl.patchEmployee(id, employee);
-			return  new ResponseEntity<EmployeePostDto>(updatedEmployee, HttpStatus.ACCEPTED);
-		} catch (Exception e) {
+			return new ResponseEntity<EmployeePostDto>(updatedEmployee, HttpStatus.ACCEPTED);
+		} catch (ResponseStatusException e) {
 			e.printStackTrace();
-			return null;
+			throw e;
 		}
 	}
 	
-	//To-do, delete request
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Boolean> deleteEmployee(@PathVariable String id) throws ResponseStatusException {
+		boolean deleteStatus = this.employeeServiceImpl.deleteEmployee(id);
+		if(deleteStatus)
+			return new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED);
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	}
 }
