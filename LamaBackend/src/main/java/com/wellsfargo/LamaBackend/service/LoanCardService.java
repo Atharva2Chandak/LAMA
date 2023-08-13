@@ -1,6 +1,7 @@
 package com.wellsfargo.LamaBackend.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,4 +12,5 @@ public interface LoanCardService {
 	LoanCardDto createLoanCard(LoanCard loanCard) throws ResponseStatusException;
 	List<LoanCardDto> getAllLoanCards();
 	LoanCardDto getLoanCard(String id) throws ResponseStatusException;
+	LoanCardDto patchLoanCard(String id, Map<String,String> loanCard) throws ResponseStatusException;
 }

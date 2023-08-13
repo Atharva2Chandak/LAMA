@@ -1,11 +1,13 @@
 package com.wellsfargo.LamaBackend.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +50,15 @@ public class LoanCardController {
 		List<LoanCardDto> loanCardDtos = this.loanCardServiceImpl.getAllLoanCards();
 		return new ResponseEntity<List<LoanCardDto>>(loanCardDtos, HttpStatus.OK); 
 	}
+	
+	@PatchMapping("/update/{id}")
+	public ResponseEntity<LoanCardDto> updateLoanCard(@PathVariable String id, @RequestBody Map<String, String> loanCard) throws ResponseStatusException {
+		try {
+			return new ResponseEntity<LoanCardDto>(this.loanCardServiceImpl.patchLoanCard(id, loanCard), HttpStatus.OK);
+		} catch(ResponseStatusException e) {
+			throw e;
+		}
+	}
+	
+	//To-do delete
 }

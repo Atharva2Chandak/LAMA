@@ -2,6 +2,7 @@ package com.wellsfargo.LamaBackend.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -46,5 +47,24 @@ public class LoanCardServiceImpl implements LoanCardService{
 		return this.modelMapper.map(loanCard.get(), LoanCardDto.class);
 	}
 	
-	//To-do Update loan, delete loan
+	public LoanCardDto patchLoanCard(String id, Map<String, String> loanCard) throws ResponseStatusException {
+		if(id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id can't be null");
+		
+		Optional<LoanCard> foundLoanCardOptional = this.loanCardRepository.findById(id);
+		if(foundLoanCardOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such loan card found");
+		
+		LoanCard foundLoanCard = foundLoanCardOptional.get();
+		for(var key: loanCard.keySet()) {
+			var currProp = loanCard.get(key);
+			if(key.equalsIgnoreCase("durationInYears")) {
+				foundLoanCard.setDurationInYears(Integer.parseInt(currProp));
+			}
+			if(key.equalsIgnoreCase("loanType")) {
+				foundLoanCard.setLoanType(currProp);
+			}
+		}
+		LoanCard updateLoanCard = this.loanCardRepository.save(foundLoanCard);
+		return this.modelMapper.map(updateLoanCard, LoanCardDto.class);
+		
+	}
 }
