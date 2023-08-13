@@ -64,7 +64,12 @@ public class LoanCardServiceImpl implements LoanCardService{
 			}
 		}
 		LoanCard updateLoanCard = this.loanCardRepository.save(foundLoanCard);
-		return this.modelMapper.map(updateLoanCard, LoanCardDto.class);
-		
+		return this.modelMapper.map(updateLoanCard, LoanCardDto.class);	
+	}
+	
+	public Boolean deleteLoanCard(String id) throws ResponseStatusException {
+		if(id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id can't be null");
+		this.loanCardRepository.deleteById(id);
+		return true;
 	}
 }
