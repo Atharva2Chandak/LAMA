@@ -16,7 +16,7 @@ public class LoanCard {
 	@Id
 	@GeneratedValue(generator="uuid", strategy=GenerationType.AUTO)
 	@GenericGenerator(name="uuid", strategy="uuid2")
-	@Column(name="loan_type_id", unique=true, nullable=false)
+	@Column(name="loan_id", unique=true, nullable=false)
 	private String id;
 	
 	
@@ -62,8 +62,4 @@ public class LoanCard {
 	public String toString() {
 		return "LoanCard [id=" + id + ", loanType=" + loanType + ", durationInYears=" + durationInYears + "]";
 	}
-	
-	
-	
-	
 }
