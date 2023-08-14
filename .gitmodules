@@ -1,0 +1,3 @@
+[submodule "batch4frontend"]
+	path = batch4frontend
+	url = https://github.com/amrev16/batch4frontend
