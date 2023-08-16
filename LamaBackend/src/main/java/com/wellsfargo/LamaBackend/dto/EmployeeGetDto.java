@@ -8,6 +8,7 @@ public class EmployeeGetDto {
 	private char gender;
 	private Date dob;
 	private Date doj;
+	private String id;
 	
 	public EmployeeGetDto() {
 		super();
@@ -15,6 +16,11 @@ public class EmployeeGetDto {
 
 	public String getName() {
 		return name;
+	}
+	public String getId() { return id; }
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
