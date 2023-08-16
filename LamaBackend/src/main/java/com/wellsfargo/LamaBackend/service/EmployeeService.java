@@ -15,4 +15,5 @@ public interface EmployeeService {
 	List<EmployeeGetDto> getAllEmployees();
 	EmployeePostDto patchEmployee(String id, Map<String, String> employee) throws ResponseStatusException;
 	Boolean deleteEmployee(String id);
+	Employee getEmployeeEntity(String id) throws ResponseStatusException;
 }

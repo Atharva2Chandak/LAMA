@@ -3,6 +3,7 @@ package com.wellsfargo.LamaBackend.controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.wellsfargo.LamaBackend.dto.EmployeeGetDto;
 import com.wellsfargo.LamaBackend.dto.EmployeePostDto;
 import com.wellsfargo.LamaBackend.entities.Employee;
+import com.wellsfargo.LamaBackend.entities.EmployeeCardDetail;
+import com.wellsfargo.LamaBackend.entities.LoanCard;
 import com.wellsfargo.LamaBackend.service.impl.EmployeeServiceImpl;
+import com.wellsfargo.LamaBackend.service.impl.LoanCardServiceImpl;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -27,6 +31,12 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeServiceImpl employeeServiceImpl;
+	
+	@Autowired
+	private LoanCardServiceImpl loanCardServiceImpl;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@PostMapping("/create")
 	public ResponseEntity<EmployeePostDto> createEmployee(@RequestBody Employee employee) {
@@ -64,4 +74,29 @@ public class EmployeeController {
 			return new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED);
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
+	
+	@PostMapping("/takeLoan")
+	public void mapLoan(@RequestBody Map<String, String> empLoanDetails) {
+		String empId = empLoanDetails.get("empId");
+		String loanId = empLoanDetails.get("loanId");
+//		EmployeeGetDto empDto = this.employeeServiceImpl.getEmployee(empId);
+//		Employee emp = modelMapper.map(empDto, Employee.class);
+//		LoanCard loanCard = modelMapper.map(this.loanCardServiceImpl.getLoanCard(loanId), LoanCard.class);
+		
+		Employee emp = this.employeeServiceImpl.getEmployeeEntity(empId);
+		LoanCard loanCard = this.loanCardServiceImpl.getLoanCardEntity(loanId);
+		List<EmployeeCardDetail> empLoanList = emp.getEmployeeCardDetails();
+		List<EmployeeCardDetail> loanEmpList = loanCard.getCardEmployeesDetail();
+		
+		EmployeeCardDetail empCardDetail = new EmployeeCardDetail(emp,loanCard,"17-08-2020");
+//		curr.add(new EmployeeCardDetail(emp, loanCard,"17-08-47"));
+		
+		empLoanList.add(empCardDetail);
+		loanEmpList.add(empCardDetail);
+		
+		this.employeeServiceImpl.createEmployee(emp);
+		this.loanCardServiceImpl.createLoanCard(loanCard);
+		
+	}
+
 }
