@@ -3,12 +3,18 @@ package com.wellsfargo.LamaBackend.entities;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -40,6 +46,13 @@ public class Employee {
 	
 	@Column(name="is_admin")
 	private char isAdmin;
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<EmployeeCardDetail> empoyeeCardDetails; //one employee, many cards
+	
+	@OneToMany(mappedBy = "employee")
+	private Set<Item> items;
+	
 	public Employee() {
 		super();
 	}
@@ -56,6 +69,8 @@ public class Employee {
 		this.dob = dob;
 		this.doj = doj;
 		this.isAdmin = '0';
+		this.empoyeeCardDetails = new ArrayList<>();
+		this.items = new HashSet<>();
 	}
 	public String getId() {
 		return id;
@@ -123,6 +138,23 @@ public class Employee {
 		this.isAdmin = isAdmin;
 	}
 	
+	public List<EmployeeCardDetail> getEmployeeCardDetails() {
+		return this.empoyeeCardDetails;
+	}
+	
+	public void setEmployeeCardDetails(List<EmployeeCardDetail> employeeCardDetails) {
+		this.empoyeeCardDetails = employeeCardDetails;
+	}
+	
+	
+	public Set<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<Item> items) {
+		this.items = items;
+	}
+
 	private Date parseDate(String date) {
 		try {
 			return new Date(new SimpleDateFormat("dd-MM-yyyy").parse(date).getTime());

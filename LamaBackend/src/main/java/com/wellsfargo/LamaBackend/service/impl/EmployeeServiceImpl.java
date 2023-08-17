@@ -91,4 +91,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 			this.employeeRepository.deleteById(id);
 		return true;
 	}
+	
+	public Employee getEmployeeEntity(String id) throws ResponseStatusException {
+		Optional<Employee> employee = this.employeeRepository.findById(id);
+		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		return employee.get();
+	}
 }

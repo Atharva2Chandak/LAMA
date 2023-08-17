@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.server.ResponseStatusException;
 
+import com.wellsfargo.LamaBackend.entities.Employee;
 //import com.wellsfargo.LamaBackend.dto.EmployeeGetDto;
 //import com.wellsfargo.LamaBackend.dto.EmployeePostDto;
 import com.wellsfargo.LamaBackend.entities.Item;
@@ -15,4 +16,5 @@ public interface ItemService {
 	List<Item> getAllItems();
 	Item patchItem(String id, Map<String, String> item) throws ResponseStatusException;
 	Boolean deleteItem(String id);
+	Boolean issueItemToEmployee(Item item, Employee employee);
 }

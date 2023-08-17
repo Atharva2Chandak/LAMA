@@ -72,4 +72,11 @@ public class LoanCardServiceImpl implements LoanCardService{
 		this.loanCardRepository.deleteById(id);
 		return true;
 	}
+	
+	public LoanCard getLoanCardEntity(String id) throws ResponseStatusException {
+		if(id == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id can't be null");
+		Optional<LoanCard> loanCard = this.loanCardRepository.findById(id);
+		if(loanCard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan Card Not found");
+		return loanCard.get();
+	}
 }
