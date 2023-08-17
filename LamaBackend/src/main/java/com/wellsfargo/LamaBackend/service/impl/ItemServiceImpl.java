@@ -1,18 +1,17 @@
 package com.wellsfargo.LamaBackend.service.impl;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
-//import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-//import com.wellsfargo.LamaBackend.dto.EmployeeGetDto;
-//import com.wellsfargo.LamaBackend.dto.EmployeePostDto;
+import com.wellsfargo.LamaBackend.entities.Employee;
 import com.wellsfargo.LamaBackend.entities.Item;
 import com.wellsfargo.LamaBackend.jpaRepos.ItemRepository;
 import com.wellsfargo.LamaBackend.service.ItemService;
@@ -27,22 +26,16 @@ public class ItemServiceImpl implements ItemService {
 	public Item createItem(Item item) {
 		Item savedItem = itemRepository.save(item);
 		return savedItem;
-        //?? return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
 	}
 	
 	public Item getItem(String id) throws ResponseStatusException {
 		Optional<Item> item = this.itemRepository.findById(id);
 		if(item.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		//?? EmployeeGetDto employeeGetDto = this.modelMapper.map(employee.get(), EmployeeGetDto.class);
         return item.get();
 	}
 	
 	public List<Item> getAllItems() {
-		//List<Item> item = this.itemRepository.findAll();
-		List<Item> foundItems = new ArrayList<>();
-		/*for(var item: items) {
-            //??foundEmployeesDto.add(this.modelMapper.map(employee, EmployeeGetDto.class));
-		}*/
+		List<Item> foundItems = this.itemRepository.findAll();
 		return foundItems;
 	}
 	
@@ -61,10 +54,6 @@ public class ItemServiceImpl implements ItemService {
 					foundItem.setItemDescription(updateValue);
 				}
 				
-				if(key.equalsIgnoreCase("issueStatus")) {
-					foundItem.setIssueStatus(updateValue.charAt(0));
-				}
-				
 				if(key.equalsIgnoreCase("itemMake")) {
 					foundItem.setItemMake(updateValue);
 				}
@@ -79,7 +68,6 @@ public class ItemServiceImpl implements ItemService {
 			}
 			
 			Item updatedItem = this.itemRepository.save(foundItem);
-			//return this.modelMapper.map(updatedEmployee, EmployeePostDto.class);
             return updatedItem;
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item not found");
@@ -89,6 +77,16 @@ public class ItemServiceImpl implements ItemService {
 	public Boolean deleteItem(String id) {
 		if(id == null) return false;
 			this.itemRepository.deleteById(id);
+		return true;
+	}
+	
+	public Boolean issueItemToEmployee(Item item, Employee employee) {
+		if(item.getIssueStatus() == '1') return false;
+		UUID uuid = UUID.randomUUID();
+		item.setIssueId(uuid.toString());
+		item.setEmployee(employee);
+		item.setIssueDate(new Date());
+		item.setIssueStatus('1');
 		return true;
 	}
 }

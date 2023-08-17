@@ -1,13 +1,20 @@
 package com.wellsfargo.LamaBackend.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="item_master")
@@ -33,6 +40,20 @@ public class Item {
 	
 	@Column(name="item_valuation", nullable=false)
 	private int itemValuation;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employee_id", nullable=true)
+	@JsonIgnore
+	private Employee employee;
+	
+	@Column(name="issue_id")
+	private String issueId;
+	
+	@Column(name="issue_Date")
+	private Date issueDate;
+	
+	@Column(name="return_date")
+	private Date returnDate;
 	
 	public Item() {}
 
@@ -93,6 +114,38 @@ public class Item {
 
 	public void setItemValuation(int itemValuation) {
 		this.itemValuation = itemValuation;
+	}
+	
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+	public String getIssueId() {
+		return issueId;
+	}
+
+	public void setIssueId(String issueId) {
+		this.issueId = issueId;
+	}
+
+	public Date getIssueDate() {
+		return issueDate;
+	}
+
+	public void setIssueDate(Date issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	public Date getReturnDate() {
+		return returnDate;
+	}
+
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 
 	@Override
