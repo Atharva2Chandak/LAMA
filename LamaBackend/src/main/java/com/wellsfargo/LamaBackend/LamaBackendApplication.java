@@ -16,7 +16,7 @@ public class LamaBackendApplication {
 		SpringApplication.run(LamaBackendApplication.class, args);
 		
 		//Boilerplate to get a connection and make a query with JDBC
-		String URI = "jdbc:mariadb://localhost:3306/LamaDb";
+		String URI = "jdbc:mariadb://localhost:3306/lamadb";
 		DatabaseConnectionWithDriverManager connection = new DatabaseConnectionWithDriverManager(URI);
 		try {
 			System.out.println("database connected: " + connection.connect());
