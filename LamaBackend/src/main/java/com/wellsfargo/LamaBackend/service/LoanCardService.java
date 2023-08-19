@@ -15,4 +15,5 @@ public interface LoanCardService {
 	LoanCardDto patchLoanCard(String id, Map<String,String> loanCard) throws ResponseStatusException;
 	Boolean deleteLoanCard(String id) throws ResponseStatusException;
 	LoanCard getLoanCardEntity(String id) throws ResponseStatusException;
+	LoanCard getLoanCardEntityByLoanType(String loanType) throws ResponseStatusException;
 }

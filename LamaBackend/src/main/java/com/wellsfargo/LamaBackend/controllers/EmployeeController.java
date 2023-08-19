@@ -1,10 +1,11 @@
 package com.wellsfargo.LamaBackend.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@ import com.wellsfargo.LamaBackend.entities.Item;
 import com.wellsfargo.LamaBackend.entities.LoanCard;
 import com.wellsfargo.LamaBackend.service.impl.EmployeeServiceImpl;
 import com.wellsfargo.LamaBackend.service.impl.ItemServiceImpl;
-import com.wellsfargo.LamaBackend.service.impl.LoanCardServiceImpl;
 
 @RestController
 @CrossOrigin
@@ -38,13 +38,7 @@ public class EmployeeController {
 	private EmployeeServiceImpl employeeServiceImpl;
 	
 	@Autowired
-	private LoanCardServiceImpl loanCardServiceImpl;
-	
-	@Autowired
 	private ItemServiceImpl itemServiceImpl;
-	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@PostMapping("/create")
 	public ResponseEntity<EmployeePostDto> createEmployee(@RequestBody Employee employee) {
@@ -83,30 +77,6 @@ public class EmployeeController {
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping("/takeLoan")
-	public void mapLoan(@RequestBody Map<String, String> empLoanDetails) {
-		String empId = empLoanDetails.get("empId");
-		String loanId = empLoanDetails.get("loanId");
-//		EmployeeGetDto empDto = this.employeeServiceImpl.getEmployee(empId);
-//		Employee emp = modelMapper.map(empDto, Employee.class);
-//		LoanCard loanCard = modelMapper.map(this.loanCardServiceImpl.getLoanCard(loanId), LoanCard.class);
-		
-		Employee emp = this.employeeServiceImpl.getEmployeeEntity(empId);
-		LoanCard loanCard = this.loanCardServiceImpl.getLoanCardEntity(loanId);
-		List<EmployeeCardDetail> empLoanList = emp.getEmployeeCardDetails();
-		List<EmployeeCardDetail> loanEmpList = loanCard.getCardEmployeesDetail();
-		
-		EmployeeCardDetail empCardDetail = new EmployeeCardDetail(emp,loanCard,"17-08-2020");
-//		curr.add(new EmployeeCardDetail(emp, loanCard,"17-08-47"));
-		
-		empLoanList.add(empCardDetail);
-		loanEmpList.add(empCardDetail);
-		
-		this.employeeServiceImpl.createEmployee(emp);
-		this.loanCardServiceImpl.createLoanCard(loanCard);
-		
-	}
-	
 	//At later stages the empId comes from the jwt
 	@PostMapping("/loanItem/{empId}")
 	public ResponseEntity<Map<String,String>> loanAnItem(@PathVariable String empId, @RequestBody Map<String, String> requestBody) throws ResponseStatusException {
@@ -127,23 +97,27 @@ public class EmployeeController {
 		Employee foundEmployee = this.employeeServiceImpl.getEmployeeEntity(empId);
 		
 		//Issuing the foundItem to foundEmployee
-		if(!this.itemServiceImpl.issueItemToEmployee(foundItem, foundEmployee)) throw new ResponseStatusException(HttpStatus.CONFLICT);
-		
-		
+		if(!this.itemServiceImpl.issueItemToEmployee(foundItem, foundEmployee)) throw new ResponseStatusException(HttpStatus.CONFLICT, "Item is already issued");
 		
 		//Saving the updated found item
+		//To-do : (optimization) createItem checks for the loan card again, not required in this use case
 		Item updatedItem = this.itemServiceImpl.createItem(foundItem);
 		
-		//Saving the updated employee
-		foundEmployee.getItems().add(foundItem);
 		
-		//To-do return date fetch from loan card duration
 		/*
-		 * Possible Steps:
-		 * Get loan cards matching the item category
-		 * Create this loan card to item mapping
+		 * Get loan card matching the item category : Already stored as foreign key in item
 		 * Create employee to loan card mapping (employee_card_details) save this loan card in employee EmployeeCardDetail list
 		 */
+		LoanCard loanCard = updatedItem.getLoanCard();
+		List<EmployeeCardDetail> empLoanList = foundEmployee.getEmployeeCardDetails();
+		
+		EmployeeCardDetail empCardDetail = new EmployeeCardDetail(foundEmployee,loanCard, new SimpleDateFormat("dd-mm-yyyy").format(new Date()));
+		
+		empLoanList.add(empCardDetail);
+		
+		this.employeeServiceImpl.createEmployee(foundEmployee);
+		
+		
 		Map<String,String> responseBody = new HashMap<>();
 		responseBody.put("issueId", updatedItem.getIssueId());
 		return new ResponseEntity<Map<String,String>>(responseBody, HttpStatus.OK);
