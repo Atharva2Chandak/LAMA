@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-//import com.wellsfargo.LamaBackend.dto.LoanCardDto;
-//import com.wellsfargo.LamaBackend.dto.LoanCardDto;
 import com.wellsfargo.LamaBackend.entities.Item;
 import com.wellsfargo.LamaBackend.service.impl.ItemServiceImpl;
 
@@ -29,11 +27,10 @@ public class ItemController {
 
 	@Autowired
 	private ItemServiceImpl itemServiceImpl;
-	
+		
 	@PostMapping("/create")
 	public ResponseEntity<Item> saveItem(@RequestBody Item item) throws ResponseStatusException {
-		try {			
-			//LoanCardDto loanCardDto = this.loanCardServiceImpl.createLoanCard(loanCard);
+		try {						
             Item savedItem = this.itemServiceImpl.createItem(item);
 			return new ResponseEntity<Item>(savedItem, HttpStatus.CREATED);
 		} catch(ResponseStatusException e) {

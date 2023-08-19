@@ -79,4 +79,10 @@ public class LoanCardServiceImpl implements LoanCardService{
 		if(loanCard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan Card Not found");
 		return loanCard.get();
 	}
+	
+	public LoanCard getLoanCardEntityByLoanType(String loanType) throws ResponseStatusException {
+		Optional<LoanCard> loanCard = this.loanCardRepository.findByLoanType(loanType);
+		if(loanCard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No loan card with given loan type");
+		return loanCard.get();
+	}
 }

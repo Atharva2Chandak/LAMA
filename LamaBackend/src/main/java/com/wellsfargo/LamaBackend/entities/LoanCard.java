@@ -2,6 +2,7 @@ package com.wellsfargo.LamaBackend.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ public class LoanCard {
 	private String id;
 	
 	
-	@Column(name="loan_type", nullable=false)
+	@Column(name="loan_type", nullable=false, unique=true)
 	private String loanType;
 	
 	@Column(name="duration_in_years", nullable=false)
@@ -33,6 +34,9 @@ public class LoanCard {
 	
 	@OneToMany(mappedBy = "loanCard", cascade = CascadeType.ALL)
 	private List<EmployeeCardDetail> cardEmployeesDetail; //one card, many employees
+	
+	@OneToMany(mappedBy = "loanCard", cascade = CascadeType.ALL)
+	private Set<Item> items;
 	
 	public LoanCard() {}
 	
@@ -74,6 +78,14 @@ public class LoanCard {
 
 	public void setCardEmployeesDetail(List<EmployeeCardDetail> cardEmployeesDetail) {
 		this.cardEmployeesDetail = cardEmployeesDetail;
+	}
+
+	public Set<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<Item> items) {
+		this.items = items;
 	}
 
 	@Override

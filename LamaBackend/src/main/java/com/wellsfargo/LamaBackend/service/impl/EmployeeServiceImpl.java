@@ -33,7 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	public EmployeeGetDto getEmployee(String id) throws ResponseStatusException {
 		Optional<Employee> employee = this.employeeRepository.findById(id);
-		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested Employee not found");
 		EmployeeGetDto employeeGetDto = this.modelMapper.map(employee.get(), EmployeeGetDto.class);
 		return employeeGetDto;
 	}
@@ -82,7 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Employee updatedEmployee = this.employeeRepository.save(foundEmployee);
 			return this.modelMapper.map(updatedEmployee, EmployeePostDto.class);
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Requested Employee not found");
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	public Employee getEmployeeEntity(String id) throws ResponseStatusException {
 		Optional<Employee> employee = this.employeeRepository.findById(id);
-		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested Employee not found");
 		return employee.get();
 	}
 }

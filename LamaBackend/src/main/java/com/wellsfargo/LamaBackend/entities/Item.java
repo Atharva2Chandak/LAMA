@@ -1,6 +1,7 @@
 package com.wellsfargo.LamaBackend.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,6 +46,11 @@ public class Item {
 	@JoinColumn(name = "employee_id", nullable=true)
 	@JsonIgnore
 	private Employee employee;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "loan_id", nullable=false)
+	@JsonIgnore
+	private LoanCard loanCard;
 	
 	@Column(name="issue_id")
 	private String issueId;
@@ -148,13 +154,36 @@ public class Item {
 		this.returnDate = returnDate;
 	}
 
+	public LoanCard getLoanCard() {
+		return loanCard;
+	}
+
+	public void setLoanCard(LoanCard loanCard) {
+		this.loanCard = loanCard;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		return Objects.equals(id, other.id);
+	}
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", itemDescription=" + itemDescription + ", issueStatus=" + issueStatus
 				+ ", itemMake=" + itemMake + ", itemCategory=" + itemCategory + ", itemValuation=" + itemValuation
 				+ "]";
 	}
-	
-	
 	
 }
