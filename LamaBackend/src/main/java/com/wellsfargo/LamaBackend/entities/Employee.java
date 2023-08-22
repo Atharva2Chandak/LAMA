@@ -16,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -29,16 +32,19 @@ public class Employee {
 	@Column(name="employee_id", unique=true, nullable=false)
 	private String id;
 	
-	
+	@NotBlank(message="name cannot be left blank")
 	@Column(name="employee_name", nullable=false)
 	private String name;
 	
-	
+	@NotBlank
 	@Column(nullable=false)
+	@Size(min=8, max=20, message="The password must be between 8 and 20 characters")
 	private String password;
 	
 	private String designation;
 	private String department;
+	
+	@NotNull
 	private char gender;
 	
 	private Date dob;

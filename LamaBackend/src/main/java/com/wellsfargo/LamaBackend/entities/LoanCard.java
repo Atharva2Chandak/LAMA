@@ -12,6 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,9 +30,13 @@ public class LoanCard {
 	private String id;
 	
 	
-	@Column(name="loan_type", nullable=false, unique=true)
+	@NotBlank(message="Loan Type cannot be null or blank")
+	@Size(min=3, max=50)
+	@Column(name="loan_type", nullable=false,unique=true, length=50)
 	private String loanType;
 	
+	@NotNull
+	@Min(value=1,message="Duration can't be less than a year")
 	@Column(name="duration_in_years", nullable=false)
 	private int durationInYears;
 	
