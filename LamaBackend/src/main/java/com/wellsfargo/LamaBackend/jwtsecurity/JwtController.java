@@ -25,7 +25,7 @@ import com.wellsfargo.LamaBackend.entities.ERole;
 import com.wellsfargo.LamaBackend.entities.Role;
 import com.wellsfargo.LamaBackend.entities.User;
 import com.wellsfargo.LamaBackend.jwtsecurity.JwtTokenRequest;
-//import com.wellsfargo.LamaBackend.jwtsecurity.payload.request.SignupRequest;
+//import com.wellsfargo.LamaBackend.jwtsecurity.payload.request.JwtSignupRequest;
 import com.wellsfargo.LamaBackend.jwtsecurity.JwtTokenResponse;
 import com.wellsfargo.LamaBackend.jwtsecurity.JwtMessageResponse;
 import com.wellsfargo.LamaBackend.jpaRepos.RoleRepository;
@@ -69,53 +69,44 @@ public class JwtController {
 				new JwtTokenResponse(jwt, userDetails.getId(), userDetails.getUsername(),roles));
 	}
 
-//	@PostMapping("/signup")
-//	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-//		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-//			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-//		}
-//
-//		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-//			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-//		}
-//
-//		// Create new user's account
-//		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-//				encoder.encode(signUpRequest.getPassword()));
-//
-//		Set<String> strRoles = signUpRequest.getRole();
-//		Set<Role> roles = new HashSet<>();
-//
-//		if (strRoles == null) {
-//			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//			roles.add(userRole);
-//		} else {
-//			strRoles.forEach(role -> {
-//				switch (role) {
-//				case "admin":
-//					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(adminRole);
-//
-//					break;
-//				case "mod":
-//					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(modRole);
-//
-//					break;
-//				default:
-//					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(userRole);
-//				}
-//			});
-//		}
-//
-//		user.setRoles(roles);
-//		userRepository.save(user);
-//
-//		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-//	}
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody JwtSignupRequest JwtSignupRequest) {
+		if (userRepository.existsByUsername(JwtSignupRequest.getUsername())) {
+			return ResponseEntity.badRequest().body(new JwtMessageResponse("Error: Username is already taken!"));
+		}
+
+		
+
+		// Create new user's account
+		User user = new User(JwtSignupRequest.getUsername(),
+				encoder.encode(JwtSignupRequest.getPassword()));
+
+		Set<String> strRoles = JwtSignupRequest.getRole();
+		Set<Role> roles = new HashSet<>();
+
+		if (strRoles == null) {
+			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			roles.add(userRole);
+		} else {
+			strRoles.forEach(role -> {
+				switch (role) {
+				case "admin":
+					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(adminRole);
+					break;
+				default:
+					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(userRole);
+				}
+			});
+		}
+
+		user.setRoles(roles);
+		userRepository.save(user);
+
+		return ResponseEntity.ok(new JwtMessageResponse("User registered successfully!"));
+	}
 }

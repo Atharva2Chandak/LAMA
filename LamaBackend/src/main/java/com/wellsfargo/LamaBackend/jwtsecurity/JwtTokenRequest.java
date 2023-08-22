@@ -15,6 +15,13 @@ public class JwtTokenRequest {
 		return username;
 	}
 
+	public JwtTokenRequest(@NotBlank String username, @NotBlank String password) {
+		super();
+		System.out.println("username: "+username);
+		this.username = username;
+		this.password = password;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}

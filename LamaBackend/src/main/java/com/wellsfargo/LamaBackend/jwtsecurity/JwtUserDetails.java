@@ -38,16 +38,12 @@ public class JwtUserDetails implements UserDetails {
   }
 
   public static JwtUserDetails build(User user) {
-	  Set<Role> dummy_roles= new HashSet<Role>();
-	  dummy_roles.add(new Role(ERole.ROLE_ADMIN));
-	  dummy_roles.add(new Role(ERole.ROLE_USER));
 	  
-//    List<GrantedAuthority> authorities = user.getRoles().stream()
-//        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-//        .collect(Collectors.toList());
-	  List<GrantedAuthority> authorities = dummy_roles.stream()
-		        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-		        .collect(Collectors.toList());
+	  
+    List<GrantedAuthority> authorities = user.getRoles().stream()
+        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+        .collect(Collectors.toList());
+	  
 		   
 	  
 	//taking name as username
