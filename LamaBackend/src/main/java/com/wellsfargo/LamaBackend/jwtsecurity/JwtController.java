@@ -54,7 +54,8 @@ public class JwtController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody JwtTokenRequest loginRequest) {
-
+		
+		System.out.println(loginRequest.getUsername() + " " + loginRequest.getPassword());
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -69,44 +70,44 @@ public class JwtController {
 				new JwtTokenResponse(jwt, userDetails.getId(), userDetails.getUsername(),roles));
 	}
 
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody JwtSignupRequest JwtSignupRequest) {
-		if (userRepository.existsByUsername(JwtSignupRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new JwtMessageResponse("Error: Username is already taken!"));
-		}
-
-		
-
-		// Create new user's account
-		User user = new User(JwtSignupRequest.getUsername(),
-				encoder.encode(JwtSignupRequest.getPassword()));
-
-		Set<String> strRoles = JwtSignupRequest.getRole();
-		Set<Role> roles = new HashSet<>();
-
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
-		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-				case "admin":
-					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
-					break;
-				default:
-					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(userRole);
-				}
-			});
-		}
-
-		user.setRoles(roles);
-		userRepository.save(user);
-
-		return ResponseEntity.ok(new JwtMessageResponse("User registered successfully!"));
-	}
+//	@PostMapping("/signup")
+//	public ResponseEntity<?> registerUser(@Valid @RequestBody JwtSignupRequest JwtSignupRequest) {
+//		if (userRepository.existsByUsername(JwtSignupRequest.getUsername())) {
+//			return ResponseEntity.badRequest().body(new JwtMessageResponse("Error: Username is already taken!"));
+//		}
+//
+//		
+//
+//		// Create new user's account
+//		User user = new User(JwtSignupRequest.getUsername(),
+//				encoder.encode(JwtSignupRequest.getPassword()));
+//
+//		Set<String> strRoles = JwtSignupRequest.getRole();
+//		Set<Role> roles = new HashSet<>();
+//
+//		if (strRoles == null) {
+//			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//			roles.add(userRole);
+//		} else {
+//			strRoles.forEach(role -> {
+//				switch (role) {
+//				case "admin":
+//					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(adminRole);
+//					break;
+//				default:
+//					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(userRole);
+//				}
+//			});
+//		}
+//
+//		user.setRoles(roles);
+//		userRepository.save(user);
+//
+//		return ResponseEntity.ok(new JwtMessageResponse("User registered successfully!"));
+//	}
 }

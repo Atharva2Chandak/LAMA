@@ -62,8 +62,6 @@ public class Employee {
 		this.name = name;
 		this.designation = designation;
 		this.department = department;
-		
-		//TO-DO hash password
 		this.password = password;
 		this.gender = gender;
 		this.dob = dob;
@@ -85,7 +83,6 @@ public class Employee {
 		this.name = name;
 	}
 	public void setPassword(String password) {
-		//To-do hash password
 		this.password = password;
 	}
 	public String getPassword() {

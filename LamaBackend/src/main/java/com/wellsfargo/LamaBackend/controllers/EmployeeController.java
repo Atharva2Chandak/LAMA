@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,12 +41,13 @@ public class EmployeeController {
 	@Autowired
 	private ItemServiceImpl itemServiceImpl;
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
 	public ResponseEntity<EmployeePostDto> createEmployee(@RequestBody Employee employee) {
 		EmployeePostDto createdEmployee = this.employeeServiceImpl.createEmployee(employee);
 		return new ResponseEntity<EmployeePostDto>(createdEmployee, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EmployeeGetDto> getEmployee(@PathVariable String id) throws ResponseStatusException {
 		EmployeeGetDto foundEmployee = this.employeeServiceImpl.getEmployee(id);
