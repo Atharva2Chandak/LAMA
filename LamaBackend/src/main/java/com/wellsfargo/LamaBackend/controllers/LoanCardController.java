@@ -3,6 +3,8 @@ package com.wellsfargo.LamaBackend.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public class LoanCardController {
 	private LoanCardServiceImpl loanCardServiceImpl;
 	
 	@PostMapping("/create")
-	public ResponseEntity<LoanCardDto> saveLoanCard(@RequestBody LoanCard loanCard) throws ResponseStatusException {
+	public ResponseEntity<LoanCardDto> saveLoanCard(@Valid @RequestBody LoanCard loanCard) throws ResponseStatusException {
 		try {			
 			LoanCardDto loanCardDto = this.loanCardServiceImpl.createLoanCard(loanCard);
 			return new ResponseEntity<LoanCardDto>(loanCardDto, HttpStatus.CREATED);

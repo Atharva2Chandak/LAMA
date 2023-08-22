@@ -12,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,18 +31,27 @@ public class Item {
 	@Column(name="item_id", unique=true, nullable=false)
 	private String id;
 	
-	@Column(name="item_description", nullable=false)
+	@NotBlank
+	@Size(max=30)
+	@Column(name="item_description", nullable=false, length=30)
 	private String itemDescription;
 	
+	@NotNull
 	@Column(name="issue_status", nullable=false)
 	private char issueStatus;
 	
-	@Column(name="item_make", nullable=false)
+	@NotBlank
+	@Size(max=50)
+	@Column(name="item_make", nullable=false, length=50)
 	private String itemMake;
 	
-	@Column(name="item_category", nullable=false)
+	@NotBlank
+	@Size(max=50)
+	@Column(name="item_category", nullable=false, length=50)
 	private String itemCategory;
 	
+	@NotNull
+	@Min(value = 1, message="Item valuation must not be null and greater than one")
 	@Column(name="item_valuation", nullable=false)
 	private int itemValuation;
 	
