@@ -3,6 +3,8 @@ package com.wellsfargo.LamaBackend.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,10 @@ public class ItemController {
 	private ItemServiceImpl itemServiceImpl;
 		
 	@PostMapping("/create")
-	public ResponseEntity<Item> saveItem(@RequestBody Item item) throws ResponseStatusException {
+	public ResponseEntity<Item> saveItem(@Valid @RequestBody Item item) throws ResponseStatusException {
+		if(!(item.getIssueStatus() == '0' || item.getIssueStatus() == '1')) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Issue Status must be either 0 or 1");
+		}
 		try {						
             Item savedItem = this.itemServiceImpl.createItem(item);
 			return new ResponseEntity<Item>(savedItem, HttpStatus.CREATED);
