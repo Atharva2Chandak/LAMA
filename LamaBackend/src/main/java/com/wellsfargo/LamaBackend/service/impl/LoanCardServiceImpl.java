@@ -1,7 +1,6 @@
 package com.wellsfargo.LamaBackend.service.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +27,8 @@ public class LoanCardServiceImpl implements LoanCardService{
 	
 	public LoanCardDto createLoanCard(LoanCard loanCard) throws ResponseStatusException {	
 		if(loanCard == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Loan Card cannot be null");
-		System.out.println("Here");
+		Optional<LoanCard> presentLoanCard = this.loanCardRepository.findByLoanType(loanCard.getLoanType());
+		if(presentLoanCard.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Loan card already exists");
 		LoanCard savedLoanCard = this.loanCardRepository.save(loanCard);
 		return this.modelMapper.map(savedLoanCard, LoanCardDto.class);
 	}
@@ -85,14 +85,5 @@ public class LoanCardServiceImpl implements LoanCardService{
 		Optional<LoanCard> loanCard = this.loanCardRepository.findByLoanType(loanType);
 		if(loanCard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No loan card with given loan type");
 		return loanCard.get();
-	}
-	
-	public List<LoanCardDto> getIssuedLoanCards(List<String> loanCardIds) {
-		List<LoanCard> loanCards = this.loanCardRepository.findAllById(loanCardIds);
-		List<LoanCardDto> loanCardDtos = new LinkedList<>();
-		for(var loanCard : loanCards) {
-			loanCardDtos.add(this.modelMapper.map(loanCard, LoanCardDto.class));
-		}
-		return loanCardDtos;
 	}
 }

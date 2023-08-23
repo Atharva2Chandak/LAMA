@@ -50,9 +50,6 @@ public class EmployeeController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
-	@Autowired
-	private LoanCardService loanCardService;
-	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
 	public ResponseEntity<EmployeePostDto> createEmployee(@Valid @RequestBody Employee employee) throws ResponseStatusException {
@@ -153,5 +150,13 @@ public class EmployeeController {
 		String empId = this.jwtTokenUtil.getUserNameFromJwtToken(headers.get("authorization").substring(7));
 		List<Item> items = this.itemServiceImpl.getIssuedItems(empId);
 		return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+	}
+	
+	//Route to create an Admin, must be removed before pushing code to prod
+	@PostMapping("/admin/create")
+	public ResponseEntity<EmployeePostDto> createAdmin(@Valid @RequestBody Employee employee) throws ResponseStatusException {
+		if(!(employee.getGender() == 'm' || employee.getGender()=='f' || employee.getGender()=='o')) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Gender can either be m,f or o");
+		EmployeePostDto createdAdmin = this.employeeServiceImpl.createAdmin(employee);
+		return new ResponseEntity<EmployeePostDto>(createdAdmin, HttpStatus.CREATED);
 	}
 }

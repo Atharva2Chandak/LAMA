@@ -43,6 +43,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private PasswordEncoder encoder;
 	
+	
+	//Service to create an administrator
+	public EmployeePostDto createAdmin(Employee admin) {
+		//Encoding the password
+				admin.setPassword(encoder.encode(admin.getPassword()));
+				
+				//Setting default to create employee
+				admin.setIsAdmin('1');
+				
+				//Saving the employee
+				Employee savedEmployee = employeeRepository.save(admin);
+				
+				//Duplicating the employee in the user table required by spring security
+				User springSecurityUser = new User(savedEmployee.getId(), savedEmployee.getPassword());
+				
+				//Creating user role
+				Set<Role> roles = new HashSet<>();
+				Role userRole = this.roleRepository.findByName(ERole.ROLE_ADMIN)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(userRole);
+				
+				//Setting role
+				springSecurityUser.setRoles(roles);
+				
+				//Saving the user
+				this.userRepository.save(springSecurityUser);
+				
+				return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
+	}
+	
 	public EmployeePostDto createEmployee(Employee employee) {
 		
 		//Encoding the password
