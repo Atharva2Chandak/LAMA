@@ -57,12 +57,14 @@ public class EmployeeController {
 		return new ResponseEntity<EmployeeGetDto>(foundEmployee, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/all")
 	public ResponseEntity<List<EmployeeGetDto>> getAllEmployees() {
 		List<EmployeeGetDto> employees = employeeServiceImpl.getAllEmployees();
 		return new ResponseEntity<List<EmployeeGetDto>>(employees, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<EmployeePostDto> updateEmployeeDetails(@PathVariable String id, @RequestBody Map<String,String> employee) throws ResponseStatusException{
 		try {
@@ -74,6 +76,7 @@ public class EmployeeController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Boolean> deleteEmployee(@PathVariable String id) throws ResponseStatusException {
 		boolean deleteStatus = this.employeeServiceImpl.deleteEmployee(id);

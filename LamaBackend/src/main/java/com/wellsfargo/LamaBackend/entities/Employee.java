@@ -38,7 +38,7 @@ public class Employee {
 	
 	@NotBlank
 	@Column(nullable=false)
-	@Size(min=8, max=20, message="The password must be between 8 and 20 characters")
+	@Size(min=8, message="The password must be between 8 and 20 characters")
 	private String password;
 	
 	private String designation;
