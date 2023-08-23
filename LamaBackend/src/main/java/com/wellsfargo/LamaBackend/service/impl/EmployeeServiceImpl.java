@@ -72,6 +72,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
 	}
 	
+	public Employee updateEmployee(Employee employee) {
+		return this.employeeRepository.save(employee);
+	}
+	
 	public EmployeeGetDto getEmployee(String id) throws ResponseStatusException {
 		Optional<Employee> employee = this.employeeRepository.findById(id);
 		if(employee.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested Employee not found");

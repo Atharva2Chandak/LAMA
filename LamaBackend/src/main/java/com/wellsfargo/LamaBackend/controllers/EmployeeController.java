@@ -3,6 +3,7 @@ package com.wellsfargo.LamaBackend.controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +31,8 @@ import com.wellsfargo.LamaBackend.entities.Employee;
 import com.wellsfargo.LamaBackend.entities.EmployeeCardDetail;
 import com.wellsfargo.LamaBackend.entities.Item;
 import com.wellsfargo.LamaBackend.entities.LoanCard;
+import com.wellsfargo.LamaBackend.jwtsecurity.JwtTokenUtil;
+import com.wellsfargo.LamaBackend.service.LoanCardService;
 import com.wellsfargo.LamaBackend.service.impl.EmployeeServiceImpl;
 import com.wellsfargo.LamaBackend.service.impl.ItemServiceImpl;
 
@@ -43,9 +47,15 @@ public class EmployeeController {
 	@Autowired
 	private ItemServiceImpl itemServiceImpl;
 	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private LoanCardService loanCardService;
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
-	public ResponseEntity<EmployeePostDto> createEmployee(@Valid @RequestBody Employee employee) {
+	public ResponseEntity<EmployeePostDto> createEmployee(@Valid @RequestBody Employee employee) throws ResponseStatusException {
 		if(!(employee.getGender() == 'm' || employee.getGender()=='f' || employee.getGender()=='o')) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Gender can either be m,f or o");
 		EmployeePostDto createdEmployee = this.employeeServiceImpl.createEmployee(employee);
 		return new ResponseEntity<EmployeePostDto>(createdEmployee, HttpStatus.CREATED);
@@ -85,11 +95,13 @@ public class EmployeeController {
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 	
-	//At later stages the empId comes from the jwt
-	@PostMapping("/loanItem/{empId}")
-	public ResponseEntity<Map<String,String>> loanAnItem(@PathVariable String empId, @RequestBody Map<String, String> requestBody) throws ResponseStatusException {
+	
+	//Route for a logged in employee to loan an item
+	@PreAuthorize("hasRole('USER')")
+	@PostMapping("/loanItem")
+	public ResponseEntity<Map<String,String>> loanAnItem(@RequestHeader Map<String,String> headers, @RequestBody Map<String, String> requestBody) throws ResponseStatusException {
 		if(requestBody.size() == 0 || !requestBody.containsKey("itemId")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "itemId must not be null");
 		}
 		
 		/*
@@ -97,12 +109,15 @@ public class EmployeeController {
 		 * ItemService handles if the item was not found
 		 */
 		Item foundItem = this.itemServiceImpl.getItem(requestBody.get("itemId"));
+		System.out.println("Item found");
 		
 		/*
 		 * Searching for the respective Employee in the database
 		 * Employee service handles if the employee was not found
 		 */
+		String empId = this.jwtTokenUtil.getUserNameFromJwtToken(headers.get("authorization").substring(7));
 		Employee foundEmployee = this.employeeServiceImpl.getEmployeeEntity(empId);
+		System.out.println("Employee found");
 		
 		//Issuing the foundItem to foundEmployee
 		if(!this.itemServiceImpl.issueItemToEmployee(foundItem, foundEmployee)) throw new ResponseStatusException(HttpStatus.CONFLICT, "Item is already issued");
@@ -110,7 +125,7 @@ public class EmployeeController {
 		//Saving the updated found item
 		//To-do : (optimization) createItem checks for the loan card again, not required in this use case
 		Item updatedItem = this.itemServiceImpl.createItem(foundItem);
-		
+		System.out.println("Updated Item saved");
 		
 		/*
 		 * Get loan card matching the item category : Already stored as foreign key in item
@@ -123,12 +138,20 @@ public class EmployeeController {
 		
 		empLoanList.add(empCardDetail);
 		
-		this.employeeServiceImpl.createEmployee(foundEmployee);
-		
+		this.employeeServiceImpl.updateEmployee(foundEmployee);
+		System.out.println("Employee-loan card mapping done");
 		
 		Map<String,String> responseBody = new HashMap<>();
 		responseBody.put("issueId", updatedItem.getIssueId());
 		return new ResponseEntity<Map<String,String>>(responseBody, HttpStatus.OK);
 	}
-
+	
+	//To view all items issued to the logged in employee
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping("/loanedItems")
+	public ResponseEntity<List<Item>> getAllLoanedItems(@RequestHeader Map<String, String> headers) throws ResponseStatusException {
+		String empId = this.jwtTokenUtil.getUserNameFromJwtToken(headers.get("authorization").substring(7));
+		List<Item> items = this.itemServiceImpl.getIssuedItems(empId);
+		return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+	}
 }

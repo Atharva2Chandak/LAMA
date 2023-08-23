@@ -1,6 +1,7 @@
 package com.wellsfargo.LamaBackend.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -84,5 +85,14 @@ public class LoanCardServiceImpl implements LoanCardService{
 		Optional<LoanCard> loanCard = this.loanCardRepository.findByLoanType(loanType);
 		if(loanCard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No loan card with given loan type");
 		return loanCard.get();
+	}
+	
+	public List<LoanCardDto> getIssuedLoanCards(List<String> loanCardIds) {
+		List<LoanCard> loanCards = this.loanCardRepository.findAllById(loanCardIds);
+		List<LoanCardDto> loanCardDtos = new LinkedList<>();
+		for(var loanCard : loanCards) {
+			loanCardDtos.add(this.modelMapper.map(loanCard, LoanCardDto.class));
+		}
+		return loanCardDtos;
 	}
 }

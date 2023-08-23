@@ -17,4 +17,5 @@ public interface ItemService {
 	Item patchItem(String id, Map<String, String> item) throws ResponseStatusException;
 	Boolean deleteItem(String id);
 	Boolean issueItemToEmployee(Item item, Employee employee);
+	List<Item> getIssuedItems(String empId);
 }
