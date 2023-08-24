@@ -27,9 +27,10 @@ import org.hibernate.annotations.GenericGenerator;
 public class Employee {
 	
 	@Id
-	@GeneratedValue(generator="uuid", strategy=GenerationType.AUTO)
-	@GenericGenerator(name="uuid", strategy="uuid2")
+//	@GeneratedValue(generator="uuid", strategy=GenerationType.AUTO)
+//	@GenericGenerator(name="uuid", strategy="uuid2")
 	@Column(name="employee_id", unique=true, nullable=false)
+//	@Size(max = 6, min = 6)
 	private String id;
 	
 	@NotBlank(message="name cannot be left blank")
@@ -63,8 +64,9 @@ public class Employee {
 		super();
 	}
 	
-	public Employee(String name, String designation, String password, String department, char gender, Date dob, Date doj) {
+	public Employee(String id, String name, String designation, String password, String department, char gender, Date dob, Date doj) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.designation = designation;
 		this.department = department;
