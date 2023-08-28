@@ -1,7 +1,6 @@
 package com.wellsfargo.LamaBackend.entities;
 
 import java.util.Date;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +20,19 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name="item_master")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Item {
 	
 	@Id
@@ -73,8 +83,6 @@ public class Item {
 	
 	@Column(name="return_date")
 	private Date returnDate;
-	
-	public Item() {}
 
 	public Item(String id, String itemDescription, char issueStatus, String itemMake, String itemCategory,
 			int itemValuation) {
@@ -86,117 +94,4 @@ public class Item {
 		this.itemCategory = itemCategory;
 		this.itemValuation = itemValuation;
 	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getItemDescription() {
-		return itemDescription;
-	}
-
-	public void setItemDescription(String itemDescription) {
-		this.itemDescription = itemDescription;
-	}
-
-	public char getIssueStatus() {
-		return issueStatus;
-	}
-
-	public void setIssueStatus(char issueStatus) {
-		this.issueStatus = issueStatus;
-	}
-
-	public String getItemMake() {
-		return itemMake;
-	}
-
-	public void setItemMake(String itemMake) {
-		this.itemMake = itemMake;
-	}
-
-	public String getItemCategory() {
-		return itemCategory;
-	}
-
-	public void setItemCategory(String itemCategory) {
-		this.itemCategory = itemCategory;
-	}
-
-	public int getItemValuation() {
-		return itemValuation;
-	}
-
-	public void setItemValuation(int itemValuation) {
-		this.itemValuation = itemValuation;
-	}
-	
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
-	public String getIssueId() {
-		return issueId;
-	}
-
-	public void setIssueId(String issueId) {
-		this.issueId = issueId;
-	}
-
-	public Date getIssueDate() {
-		return issueDate;
-	}
-
-	public void setIssueDate(Date issueDate) {
-		this.issueDate = issueDate;
-	}
-
-	public Date getReturnDate() {
-		return returnDate;
-	}
-
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
-	}
-
-	public LoanCard getLoanCard() {
-		return loanCard;
-	}
-
-	public void setLoanCard(LoanCard loanCard) {
-		this.loanCard = loanCard;
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "Item [id=" + id + ", itemDescription=" + itemDescription + ", issueStatus=" + issueStatus
-				+ ", itemMake=" + itemMake + ", itemCategory=" + itemCategory + ", itemValuation=" + itemValuation
-				+ "]";
-	}
-	
 }

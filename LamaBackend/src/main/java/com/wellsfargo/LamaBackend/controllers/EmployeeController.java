@@ -3,7 +3,6 @@ package com.wellsfargo.LamaBackend.controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,6 @@ import com.wellsfargo.LamaBackend.entities.EmployeeCardDetail;
 import com.wellsfargo.LamaBackend.entities.Item;
 import com.wellsfargo.LamaBackend.entities.LoanCard;
 import com.wellsfargo.LamaBackend.jwtsecurity.JwtTokenUtil;
-import com.wellsfargo.LamaBackend.service.LoanCardService;
 import com.wellsfargo.LamaBackend.service.impl.EmployeeServiceImpl;
 import com.wellsfargo.LamaBackend.service.impl.ItemServiceImpl;
 
