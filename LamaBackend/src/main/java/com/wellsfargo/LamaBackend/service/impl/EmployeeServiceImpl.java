@@ -1,11 +1,6 @@
 package com.wellsfargo.LamaBackend.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	//Service to create an administrator
 	public EmployeePostDto createAdmin(Employee admin) {
-		//Encoding the password
+				admin.setId(UUID.randomUUID().toString());
+
+				//Encoding the password
 				admin.setPassword(encoder.encode(admin.getPassword()));
 				
 				//Setting default to create employee
@@ -75,6 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	public EmployeePostDto createEmployee(Employee employee) {
 		
+		employee.setId(UUID.randomUUID().toString().substring(0, 6));
 		//Encoding the password
 		employee.setPassword(encoder.encode(employee.getPassword()));
 		
