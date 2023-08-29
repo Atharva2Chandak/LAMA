@@ -1,0 +1,613 @@
+{
+	"info": {
+		"_postman_id": "8c9f773c-6e34-4496-91b7-3e997a3a4a64",
+		"name": "lama/luma_capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "get-all-employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/employee/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch-one-employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/employee/333a16db-1549-4cdb-b888-72310bccae9d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"333a16db-1549-4cdb-b888-72310bccae9d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-employee-details",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"emp7\",\r\n    \"department\": \"d-9901\",\r\n    \"gender\": \"f\",\r\n    \"isAdmin\":\"0\",\r\n    \"designation\": \"sde\",\r\n    \"password\":\"pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/employee/update/728f0034-f18d-46de-8988-5dd5a51a7b5d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"update",
+								"728f0034-f18d-46de-8988-5dd5a51a7b5d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee-delete-request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/employee/delete/728f0034-f18d-46de-8988-5dd5a51a7b5d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"delete",
+								"728f0034-f18d-46de-8988-5dd5a51a7b5d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiZjk2NDM2ZS1iZmU0LTQzODMtYjkzMS03OGQ3ZmFhMzQwMDYiLCJpYXQiOjE2OTI3OTc4NzQsImV4cCI6MTY5Mjg4NDI3NH0.MYDBoLc6IV58UYegfrHZ_iqT3PZSgn6teR8Fs7CezeY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Emp 1\",\r\n    \"department\": \"d1\",\r\n    \"gender\": \"m\",\r\n    \"dob\": \"15-02-1908\",\r\n    \"doj\": \"15-08-2019\",\r\n    \"password\":\"emp-password\",\r\n    \"designation\":\"some designation\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/employee/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loan-item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5ZmM2MmE1NC1mOGZhLTQ4NDgtYTE5ZS03ZmU3ZDk4NTFmNWIiLCJpYXQiOjE2OTI3OTc5ODEsImV4cCI6MTY5Mjg4NDM4MX0.Saw8y9gwPcxTbaXLZZCN70fvZZ-msXZlYkGIpMLsloY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\":\"5c69c2c4-7519-451f-8dce-2dd663b483d5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/employee/loanItem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"loanItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issue-an-item-by-employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\": \"869b1592-eca8-45f3-bd0d-0905bec33a37\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/employee/loanItem/53047588-b3bb-4f92-b07b-4b2ce1fc13a9",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"loanItem",
+								"53047588-b3bb-4f92-b07b-4b2ce1fc13a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-loaned-items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5ZmM2MmE1NC1mOGZhLTQ4NDgtYTE5ZS03ZmU3ZDk4NTFmNWIiLCJpYXQiOjE2OTI3OTc5ODEsImV4cCI6MTY5Mjg4NDM4MX0.Saw8y9gwPcxTbaXLZZCN70fvZZ-msXZlYkGIpMLsloY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/employee/loanedItems",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"loanedItems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-issued-loan-cards",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5ZmM2MmE1NC1mOGZhLTQ4NDgtYTE5ZS03ZmU3ZDk4NTFmNWIiLCJpYXQiOjE2OTI3OTc5ODEsImV4cCI6MTY5Mjg4NDM4MX0.Saw8y9gwPcxTbaXLZZCN70fvZZ-msXZlYkGIpMLsloY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/employee/issuedLoans",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employee",
+								"issuedLoans"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loan",
+			"item": [
+				{
+					"name": "create-loan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiZjk2NDM2ZS1iZmU0LTQzODMtYjkzMS03OGQ3ZmFhMzQwMDYiLCJpYXQiOjE2OTI3OTc4NzQsImV4cCI6MTY5Mjg4NDI3NH0.MYDBoLc6IV58UYegfrHZ_iqT3PZSgn6teR8Fs7CezeY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loanType\": \"electric\",\r\n    \"durationInYears\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/loan/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"loan",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-loan-details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loan/5d4dca55-53ca-44b4-b3dc-70a23693b6dd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"loan",
+								"5d4dca55-53ca-44b4-b3dc-70a23693b6dd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-loan-details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loan/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"loan",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-loan-card",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loanType\":\"Electronic\",\r\n    \"durationInYears\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/loan/update/5d4dca55-53ca-44b4-b3dc-70a23693b6dd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"loan",
+								"update",
+								"5d4dca55-53ca-44b4-b3dc-70a23693b6dd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-loan-card",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loan/delete/eb9c3537-44ea-44a0-9f1e-96e033553e24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"loan",
+								"delete",
+								"eb9c3537-44ea-44a0-9f1e-96e033553e24"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "Create-Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiZjk2NDM2ZS1iZmU0LTQzODMtYjkzMS03OGQ3ZmFhMzQwMDYiLCJpYXQiOjE2OTI3OTc4NzQsImV4cCI6MTY5Mjg4NDI3NH0.MYDBoLc6IV58UYegfrHZ_iqT3PZSgn6teR8Fs7CezeY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemDescription\" : \"Chair\",\r\n    \"issueStatus\":\"0\",\r\n    \"itemMake\":\"Wooden\",\r\n    \"itemCategory\":\"furniture\",\r\n    \"itemValuation\": \"4500\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/item/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"item",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/item/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"item",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-item",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemDescription\" : \"Table\",\r\n    \"itemMake\":\"Wooden\",\r\n    \"itemCategory\":\"test\",\r\n    \"itemValuation\": \"4500\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/item/update/56b76230-a90b-4d82-bed1-ae6b9182d930",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"item",
+								"update",
+								"56b76230-a90b-4d82-bed1-ae6b9182d930"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiZjk2NDM2ZS1iZmU0LTQzODMtYjkzMS03OGQ3ZmFhMzQwMDYiLCJpYXQiOjE2OTI3OTc4NzQsImV4cCI6MTY5Mjg4NDI3NH0.MYDBoLc6IV58UYegfrHZ_iqT3PZSgn6teR8Fs7CezeY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/item/delete/58ca7309-9226-4ade-b8bd-f1b3cdfc029a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"item",
+								"delete",
+								"58ca7309-9226-4ade-b8bd-f1b3cdfc029a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sign in",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"9fc62a54-f8fa-4848-a19e-7fe7d9851f5b\",\r\n    \"password\": \"emp-password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/signin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5ZmM2MmE1NC1mOGZhLTQ4NDgtYTE5ZS03ZmU3ZDk4NTFmNWIiLCJpYXQiOjE2OTI3OTc5ODEsImV4cCI6MTY5Mjg4NDM4MX0.Saw8y9gwPcxTbaXLZZCN70fvZZ-msXZlYkGIpMLsloY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Admin 2\",\r\n    \"department\": \"d1\",\r\n    \"gender\": \"m\",\r\n    \"dob\": \"15-02-1908\",\r\n    \"doj\": \"15-08-2019\",\r\n    \"password\":\"admin-password\",\r\n    \"designation\":\"some designation\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/employee/admin/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employee",
+						"admin",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
