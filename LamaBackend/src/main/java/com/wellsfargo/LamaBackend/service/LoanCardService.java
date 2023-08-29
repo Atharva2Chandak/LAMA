@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wellsfargo.LamaBackend.dto.LoanCardDto;
+import com.wellsfargo.LamaBackend.entities.Employee;
 import com.wellsfargo.LamaBackend.entities.LoanCard;
 
 public interface LoanCardService {

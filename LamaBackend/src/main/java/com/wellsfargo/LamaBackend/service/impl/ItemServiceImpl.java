@@ -124,4 +124,9 @@ public class ItemServiceImpl implements ItemService {
 		item.setIssueStatus('1');
 		return true;
 	}
+	
+	public List<Item> getIssuedItems(String empId) {
+		List<Item> items = this.itemRepository.getItemByEmployeeIdAndIssueStatus(empId, '1');
+		return items;
+	}
 }

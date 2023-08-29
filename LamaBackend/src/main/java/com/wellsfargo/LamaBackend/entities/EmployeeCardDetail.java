@@ -12,8 +12,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "employee_card_details")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class EmployeeCardDetail {
 	
 	@Id
@@ -29,38 +41,15 @@ public class EmployeeCardDetail {
 	@JoinColumn(name = "loan_id")
 	private LoanCard loanCard;
 	
+	@Setter(AccessLevel.NONE)
 	@Column(name="card_issue_date", nullable = false)
 	private Date cardIssueDate;
 
-	public EmployeeCardDetail() {
-		super();
-	}
-	
 	public EmployeeCardDetail(Employee employee, LoanCard loanCard, String cardIssueDate) {
 		super();
 		this.employee = employee;
 		this.loanCard = loanCard;
 		this.cardIssueDate = this.parseDate(cardIssueDate);
-	}
-	
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
-	public LoanCard getLoanCard() {
-		return loanCard;
-	}
-
-	public void setLoanCard(LoanCard loanCard) {
-		this.loanCard = loanCard;
-	}
-
-	public Date getCardIssueDate() {
-		return cardIssueDate;
 	}
 
 	public void setCardIssueDate(String cardIssueDate) {

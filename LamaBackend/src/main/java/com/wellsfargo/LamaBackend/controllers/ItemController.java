@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class ItemController {
 	@Autowired
 	private ItemServiceImpl itemServiceImpl;
 		
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
 	public ResponseEntity<Item> saveItem(@Valid @RequestBody Item item) throws ResponseStatusException {
 		if(!(item.getIssueStatus() == '0' || item.getIssueStatus() == '1')) {
@@ -58,6 +60,7 @@ public class ItemController {
 		return new ResponseEntity<List<Item>>(savedItem, HttpStatus.OK); 
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<Item> updateItem(@PathVariable String id, @RequestBody Map<String, String> item) throws ResponseStatusException {
 		try {
@@ -67,6 +70,7 @@ public class ItemController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Boolean> deleteItem(@PathVariable String id) throws ResponseStatusException{
 		try {

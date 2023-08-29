@@ -1,11 +1,6 @@
 package com.wellsfargo.LamaBackend.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +38,41 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private PasswordEncoder encoder;
 	
+	
+	//Service to create an administrator
+	public EmployeePostDto createAdmin(Employee admin) {
+				admin.setId(UUID.randomUUID().toString());
+
+				//Encoding the password
+				admin.setPassword(encoder.encode(admin.getPassword()));
+				
+				//Setting default to create employee
+				admin.setIsAdmin('1');
+				
+				//Saving the employee
+				Employee savedEmployee = employeeRepository.save(admin);
+				
+				//Duplicating the employee in the user table required by spring security
+				User springSecurityUser = new User(savedEmployee.getId(), savedEmployee.getPassword());
+				
+				//Creating user role
+				Set<Role> roles = new HashSet<>();
+				Role userRole = this.roleRepository.findByName(ERole.ROLE_ADMIN)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(userRole);
+				
+				//Setting role
+				springSecurityUser.setRoles(roles);
+				
+				//Saving the user
+				this.userRepository.save(springSecurityUser);
+				
+				return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
+	}
+	
 	public EmployeePostDto createEmployee(Employee employee) {
 		
+		employee.setId(UUID.randomUUID().toString().substring(0, 6));
 		//Encoding the password
 		employee.setPassword(encoder.encode(employee.getPassword()));
 		
@@ -70,6 +98,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.userRepository.save(springSecurityUser);
 		
 		return this.modelMapper.map(savedEmployee, EmployeePostDto.class);
+	}
+	
+	public Employee updateEmployee(Employee employee) {
+		return this.employeeRepository.save(employee);
 	}
 	
 	public EmployeeGetDto getEmployee(String id) throws ResponseStatusException {

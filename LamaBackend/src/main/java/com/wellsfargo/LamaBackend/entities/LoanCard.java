@@ -19,8 +19,19 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name="loan_card_master")
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 public class LoanCard {
 	
 	@Id
@@ -46,58 +57,10 @@ public class LoanCard {
 	@OneToMany(mappedBy = "loanCard", cascade = CascadeType.ALL)
 	private Set<Item> items;
 	
-	public LoanCard() {}
-	
 	public LoanCard(String loanType, int durationInYears) {
 		super();
 		this.loanType = loanType;
 		this.durationInYears = durationInYears;
 		this.cardEmployeesDetail = new ArrayList<>();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getLoanType() {
-		return loanType;
-	}
-
-	public void setLoanType(String loanType) {
-		this.loanType = loanType;
-	}
-
-	public int getDurationInYears() {
-		return durationInYears;
-	}
-
-	public void setDurationInYears(int durationInYears) {
-		this.durationInYears = durationInYears;
-	}
-
-	
-	public List<EmployeeCardDetail> getCardEmployeesDetail() {
-		return cardEmployeesDetail;
-	}
-
-	public void setCardEmployeesDetail(List<EmployeeCardDetail> cardEmployeesDetail) {
-		this.cardEmployeesDetail = cardEmployeesDetail;
-	}
-
-	public Set<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(Set<Item> items) {
-		this.items = items;
-	}
-
-	@Override
-	public String toString() {
-		return "LoanCard [id=" + id + ", loanType=" + loanType + ", durationInYears=" + durationInYears + "]";
 	}
 }
