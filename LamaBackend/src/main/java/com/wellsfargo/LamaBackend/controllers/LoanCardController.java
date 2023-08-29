@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class LoanCardController {
 	@Autowired
 	private LoanCardServiceImpl loanCardServiceImpl;
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
 	public ResponseEntity<LoanCardDto> saveLoanCard(@Valid @RequestBody LoanCard loanCard) throws ResponseStatusException {
 		try {			
@@ -56,6 +58,7 @@ public class LoanCardController {
 		return new ResponseEntity<List<LoanCardDto>>(loanCardDtos, HttpStatus.OK); 
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<LoanCardDto> updateLoanCard(@PathVariable String id, @RequestBody Map<String, String> loanCard) throws ResponseStatusException {
 		try {
@@ -65,6 +68,7 @@ public class LoanCardController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Boolean> deleteLoanCard(@PathVariable String id) throws ResponseStatusException{
 		try {

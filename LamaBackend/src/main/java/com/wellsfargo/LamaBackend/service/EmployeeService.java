@@ -11,6 +11,7 @@ import com.wellsfargo.LamaBackend.entities.Employee;
 
 public interface EmployeeService {
 	EmployeePostDto createEmployee(Employee employee);
+	Employee updateEmployee(Employee employee);
 	EmployeeGetDto getEmployee(String id) throws ResponseStatusException;
 	List<EmployeeGetDto> getAllEmployees();
 	EmployeePostDto patchEmployee(String id, Map<String, String> employee) throws ResponseStatusException;
